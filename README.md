@@ -1,0 +1,218 @@
+# Vivah Vedam
+
+A two-sided wedding planning marketplace. Couples discover and book venues and
+service vendors. Vendors manage listings, availability, contracts, and earnings.
+Admins run platform ops for both sides.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 + shadcn/ui |
+| Database | AWS RDS (PostgreSQL), accessed via a small `pg`-based query layer — `src/lib/db/` |
+| Auth | Our own JWT (jose) + bcrypt sessions — `src/lib/auth/`, `src/lib/server/auth.ts` |
+| File storage | AWS S3 (contract PDFs, vendor logo/cover uploads) — `src/lib/s3.ts` |
+| Payments | Stripe Connect (escrow model) |
+| Hosting | A single AWS EC2 instance (nginx + PM2), see `AWS_DEPLOYMENT.md` |
+
+Everything runs on AWS. There is no third-party backend-as-a-service in this stack.
+
+---
+
+## Demo Accounts
+
+All accounts use the password: **`DemoPass123!`**
+
+| Email | Role | Profile |
+|---|---|---|
+| `priya@vivahvedam.demo` | Couple | Priya & Arjun — Mumbai, Feb 2027 |
+| `meera@vivahvedam.demo` | Couple | Meera & Rohan — Jaipur, Nov 2027 |
+| `rosewood@vivahvedam.demo` | Vendor | Rosewood Estates (Venues) |
+| `goldenlens@vivahvedam.demo` | Vendor | Golden Lens Studio (Photography) |
+| `floraldesigns@vivahvedam.demo` | Vendor | Pushpa Floral Designs (Decor) |
+| `spiceroute@vivahvedam.demo` | Vendor | Spice Route Catering |
+| `glamour@vivahvedam.demo` | Vendor | Glamour Makeup Studio |
+| `admin@vivahvedam.demo` | Admin | Platform Admin |
+
+### Suggested Demo Flow
+
+1. **Couple** — Login as `priya@vivahvedam.demo`
+   - See dashboard: wedding countdown, journey milestones, budget tracker
+   - Browse venues → book Rosewood Garden Estate
+   - Check messages (pre-seeded conversations with Rosewood and Golden Lens)
+
+2. **Vendor** — Login as `rosewood@vivahvedam.demo`
+   - See incoming booking request on Vendor → Bookings
+   - Set up Business Profile and weekly Availability
+   - View the (admin-managed) Contract page
+   - Confirm the booking, check earnings and messages
+
+3. **Admin** — Login as `admin@vivahvedam.demo`
+   - Platform overview: users, listings, bookings, GMV, pending vendor verifications
+   - Vendors tab: review a vendor's profile, verify/reject, set up their contract
+     (commission rate, payout terms, upload a signed PDF)
+   - Moderate listings, manage users, view audit log
+
+---
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 20+
+- A PostgreSQL database reachable from your machine (a local Postgres install, or
+  a real AWS RDS instance — same schema either way)
+
+### Setup
+
+1. Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/stephenbaraik/vivah-vedam.git
+cd vivah-vedam
+npm install
+```
+
+2. Create `.env.local` from the example and fill in `DATABASE_URL` / `JWT_SECRET`
+   (see `.env.local.example` for the full list, including optional Google OAuth,
+   S3, and Stripe variables):
+
+```bash
+cp .env.local.example .env.local
+```
+
+3. Apply the database schema:
+
+```bash
+npm run db:migrate
+```
+
+4. (Optional) Seed demo data:
+
+```bash
+npm run seed:demo
+```
+
+5. Start the dev server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+For a full production deployment on AWS (EC2 + RDS + S3 + a GoDaddy domain), see
+**`AWS_DEPLOYMENT.md`** — that's the canonical, step-by-step guide.
+
+---
+
+## Architecture
+
+Single Next.js app with role-based route groups:
+
+```
+src/app/
+  (public)/          # Landing, venues, services, vendor profiles
+  (auth)/             # Login, signup, onboarding
+  (couple)/           # /dashboard/* — couple planning hub
+  (vendor)/           # /vendor/* — vendor management hub (listings, bookings,
+                       #   availability, business profile, contract, earnings)
+  (admin)/            # /admin/* — platform ops (users, vendors, listings,
+                       #   bookings, payments, reviews, audit log)
+  api/                # Server-side API routes
+```
+
+### Key directories
+
+```
+src/
+  app/api/           # Bookings, messages, journey, auth, admin, vendor APIs
+  components/
+    ui/              # shadcn/ui base components
+    layouts/         # Navbar, Footer, Sidebar, DashboardShell
+    forms/           # Auth, onboarding, search forms
+    dev/             # Demo accounts banner (dev only)
+  lib/
+    db/              # pg connection pool + Postgres query builder (`.from()`)
+    auth/            # JWT session + bcrypt password hashing
+    server/          # `createDbSession()` — the per-request "who's logged in +
+                      #   give me a query handle" helper every server file uses;
+                      #   `route-guard.ts` — optional Next.js middleware helper
+    s3.ts            # S3 uploads + signed download URLs (contracts, vendor media)
+    marketplace.ts   # Venue/service/booking data fetching
+    journey.ts       # Journey step generation
+    chat.ts          # Messaging helpers
+  types/             # TypeScript types generated by hand from the RDS schema
+rds/
+  001_initial_schema.sql   # Core schema: users, weddings, venues, services,
+                            #   bookings, reviews, messages, journey, etc.
+  002_vendor_ops.sql        # Vendor profiles, contracts, availability
+infra/
+  nginx.conf, ecosystem.config.js, setup-ec2.sh, deploy.sh
+```
+
+### User Roles
+
+Three roles, enforced in the application layer (not database RLS — see
+`AWS_DEPLOYMENT.md` for why):
+
+- **couple** — browses marketplace, makes bookings, manages wedding planning
+- **vendor** — lists venues/services, manages bookings, availability, and earnings;
+  their business profile and contract are reviewed/managed by admins
+- **admin** — full platform oversight: user/vendor management, vendor verification,
+  contract management, listing moderation, payments, analytics
+
+### Booking Flow
+
+```
+Couple browses → sends request → Vendor confirms
+→ Couple pays deposit (Stripe) → booking confirmed
+→ Event day → Vendor marks complete → payout released
+```
+
+### Vendor Ops Flow
+
+```
+Vendor signs up → fills Business Profile → Admin reviews → verify/reject
+Admin sets up the vendor's Contract (commission rate, payout terms, signed PDF)
+Vendor sets weekly Availability + date-specific overrides
+```
+
+### Database Schema
+
+Key tables: `users`, `weddings`, `venues`, `services`, `bookings`, `conversations`,
+`messages`, `journey_steps`, `categories`, `reviews`, `vendor_profiles`,
+`vendor_contracts`, `vendor_availability_weekly`, `vendor_availability_overrides`.
+
+Full schema: `rds/001_initial_schema.sql` + `rds/002_vendor_ops.sql`.
+
+---
+
+## Scripts
+
+```bash
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run lint         # ESLint
+npm run typecheck    # TypeScript check
+npm run test         # Vitest watch
+npm run test:run     # Vitest single run
+npm run db:migrate   # Apply both RDS migrations
+npm run seed:demo    # Seed demo accounts + sample data
+```
+
+---
+
+## Deployment
+
+Hosted entirely on AWS: a single EC2 instance (nginx + PM2) running the Next.js
+app, an RDS PostgreSQL instance for the database, and an S3 bucket for file
+uploads, with DNS pointed at it from GoDaddy.
+
+See **`AWS_DEPLOYMENT.md`** for the full, step-by-step setup guide — RDS creation,
+EC2 launch, security groups, nginx + HTTPS (certbot), the S3 bucket + IAM role for
+uploads, and GoDaddy DNS configuration.
