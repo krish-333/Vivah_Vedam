@@ -1,0 +1,201 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@layer base {
+  :root {
+    /* ─── Warm Artisan Palette ─── */
+    --background: 33 33% 97%;
+    --foreground: 26 9% 16%;
+    --card: 34 40% 99%;
+    --card-foreground: 26 9% 16%;
+    --popover: 34 40% 99%;
+    --popover-foreground: 26 9% 16%;
+    --primary: 13 51% 53%;
+    --primary-foreground: 40 33% 97%;
+    --secondary: 140 13% 42%;
+    --secondary-foreground: 40 33% 97%;
+    --muted: 30 18% 92%;
+    --muted-foreground: 28 11% 50%;
+    --accent: 41 51% 57%;
+    --accent-foreground: 26 9% 16%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 16% 89%;
+    --input: 30 16% 89%;
+    --ring: 13 51% 53%;
+    --radius: 0.75rem;
+  }
+}
+
+@theme inline {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  /* ─── Extended Terracotta Scale ─── */
+  --color-terracotta-50: #fdf2ee;
+  --color-terracotta-100: #fae1d8;
+  --color-terracotta-200: #f4bfad;
+  --color-terracotta-300: #eb9578;
+  --color-terracotta-400: #d4785c;
+  --color-terracotta-500: #c4654a;
+  --color-terracotta-600: #a84e38;
+  --color-terracotta-700: #8b3d2e;
+  --color-terracotta-800: #6e3126;
+  --color-terracotta-900: #4d2319;
+
+  /* ─── Extended Sage Scale ─── */
+  --color-sage-50: #f2f5f1;
+  --color-sage-100: #e0e8de;
+  --color-sage-200: #c1d1bd;
+  --color-sage-300: #97b393;
+  --color-sage-400: #739670;
+  --color-sage-500: #5f7a5e;
+  --color-sage-600: #4b6249;
+  --color-sage-700: #3c4f3b;
+  --color-sage-800: #2f3e2f;
+  --color-sage-900: #1f2b1f;
+
+  /* ─── Extended Warm Gold Scale ─── */
+  --color-gold-50: #fdf8ef;
+  --color-gold-100: #f9efd7;
+  --color-gold-200: #f1dcab;
+  --color-gold-300: #e5c375;
+  --color-gold-400: #d4a64a;
+  --color-gold-500: #c9a55a;
+  --color-gold-600: #a88638;
+  --color-gold-700: #86692d;
+  --color-gold-800: #6b5325;
+  --color-gold-900: #4f3d1b;
+
+  /* ─── Typography ─── */
+  --font-heading: var(--font-heading), "Georgia", serif;
+  --font-body: var(--font-body), "Segoe UI", sans-serif;
+  --font-logo: var(--font-logo), "Georgia", serif;
+
+  /* ─── Radii ─── */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+/* ─── Grain Texture Overlay ─── */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+.grain > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── Warm Shadows ─── */
+.shadow-warm-sm {
+  box-shadow: 0 1px 3px rgba(139, 110, 82, 0.06), 0 1px 2px rgba(139, 110, 82, 0.04);
+}
+
+.shadow-warm {
+  box-shadow: 0 4px 16px rgba(139, 110, 82, 0.08), 0 1px 4px rgba(139, 110, 82, 0.04);
+}
+
+.shadow-warm-lg {
+  box-shadow: 0 12px 40px rgba(139, 110, 82, 0.12), 0 4px 12px rgba(139, 110, 82, 0.06);
+}
+
+.shadow-warm-xl {
+  box-shadow: 0 20px 60px rgba(139, 110, 82, 0.14), 0 8px 20px rgba(139, 110, 82, 0.08);
+}
+
+/* ─── Scroll-Triggered Reveal Animations ─── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-reveal-up {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-reveal-scale {
+  animation: reveal-scale 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Stagger Delays ─── */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+.delay-8 { animation-delay: 0.8s; }
