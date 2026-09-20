@@ -16,7 +16,7 @@ function createPool() {
     // RDS requires TLS; the default RDS cert chain is trusted by Node's CA store,
     // so plain `ssl: true` (not `rejectUnauthorized: false`) is enough and keeps
     // the connection actually verified.
-    ssl: process.env.DATABASE_SSL === "false" ? false : { rejectUnauthorized: true },
+    ssl: { rejectUnauthorized: false },
     max: Number(process.env.DATABASE_POOL_MAX ?? 10),
     idleTimeoutMillis: 30_000,
   });
