@@ -422,9 +422,9 @@ export default function LandingPage() {
                 EMI options and a seva plan baked in.
               </p>
               <ul className="vv-bcontact" data-reveal style={{ "--d": ".3s" } as React.CSSProperties}>
-                <li><span className="vv-ic"><Phone size={15} /></span>+91 98765 43210 · WhatsApp friendly</li>
-                <li><span className="vv-ic"><Mail size={15} /></span>hello@vivahvedam.in</li>
-                <li><span className="vv-ic"><MapPin size={15} /></span>Studio visits by appointment · Mumbai &amp; Udaipur</li>
+                <li><span className="vv-ic"><Phone size={15} /></span>+91 8291945264 · WhatsApp friendly</li>
+                <li><span className="vv-ic"><Mail size={15} /></span>krish.d@vivahvedam.in</li>
+                <li><span className="vv-ic"><MapPin size={15} /></span>Studio visits by appointment · Mumbai </li>
                 <li><span className="vv-ic"><Leaf size={15} /></span>Every wedding includes a seva report</li>
               </ul>
             </div>
