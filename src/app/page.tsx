@@ -1,496 +1,465 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { Great_Vibes } from "next/font/google";
 import {
-  Building2,
-  Camera,
-  Music,
-  UtensilsCrossed,
-  Palette,
-  Sparkles,
-  CalendarDays,
-  MapPin,
-  ArrowRight,
-  CheckCircle2,
-  Star,
-  Quote,
-  IndianRupee,
+  ArrowRight, ArrowUpRight, Phone, Mail, MapPin, Sparkles,
+  Leaf, Recycle, HeartHandshake, Wallet, CalendarRange, ShieldCheck,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
-import { Navbar } from "@/components/layouts/navbar";
-import { Footer } from "@/components/layouts/footer";
-import { HeroSearchBar } from "@/components/forms/hero-search-bar";
+import "./landing.css";
+import { VivahMark } from "@/components/landing/vivah-mark";
+import LandingMotion from "@/components/landing/landing-motion";
+import { EmiCalculator } from "@/components/landing/emi-calculator";
+import { Testimonials } from "@/components/landing/testimonials";
+import { Faq } from "@/components/landing/faq";
+import { LeadForm } from "@/components/landing/lead-form";
 
-const categories = [
-  {
-    icon: Building2,
-    label: "Venues",
-    count: "340+",
-    slug: "venues",
-    color: "bg-terracotta-50 text-terracotta-600",
-  },
-  {
-    icon: Camera,
-    label: "Photography",
-    count: "520+",
-    slug: "photography",
-    color: "bg-sage-50 text-sage-600",
-  },
-  {
-    icon: UtensilsCrossed,
-    label: "Catering",
-    count: "280+",
-    slug: "catering",
-    color: "bg-gold-50 text-gold-700",
-  },
-  {
-    icon: Palette,
-    label: "Decor",
-    count: "190+",
-    slug: "decor",
-    color: "bg-terracotta-50 text-terracotta-600",
-  },
-  {
-    icon: Music,
-    label: "Music & DJ",
-    count: "150+",
-    slug: "music-dj",
-    color: "bg-sage-50 text-sage-600",
-  },
-  {
-    icon: Sparkles,
-    label: "Makeup",
-    count: "410+",
-    slug: "makeup",
-    color: "bg-gold-50 text-gold-700",
-  },
-];
+const vibes = Great_Vibes({ subsets: ["latin"], weight: "400", variable: "--vv-script" });
 
-const featuredVenues = [
-  {
-    name: "The Grand Pavilion",
-    city: "Mumbai",
-    capacity: "500 guests",
-    price: "₹8,00,000",
-    rating: 4.9,
-    gradient: "from-amber-800/60 via-amber-700/40 to-yellow-900/60",
-  },
-  {
-    name: "Garden of Dreams",
-    city: "Jaipur",
-    capacity: "300 guests",
-    price: "₹5,20,000",
-    rating: 4.8,
-    gradient: "from-emerald-800/60 via-emerald-700/40 to-green-900/60",
-  },
-  {
-    name: "Royal Heritage Palace",
-    city: "Udaipur",
-    capacity: "800 guests",
-    price: "₹15,00,000",
-    rating: 5.0,
-    gradient: "from-rose-800/60 via-rose-700/40 to-red-900/60",
-  },
-];
-
-const steps = [
-  {
-    num: "01",
-    icon: CalendarDays,
-    title: "Tell us your vision",
+/* ── All SEO lives here (metadata + schema). Nothing keyword-stuffed renders on the page. ── */
+export const metadata: Metadata = {
+  title: "Vivah Vedam — Wedding Planners in India | End-to-End Planning, EMI Options & Zero-Waste Weddings",
+  description:
+    "Vivah Vedam is a full-service wedding atelier and planning marketplace in India. We curate your plan, make every booking, and execute every function — you have zero hassle. Weddings financed with easy EMI options, and surplus food & florals rescued through our NGO partners. Destination weddings across Udaipur, Jaipur, Goa and beyond.",
+  keywords: [
+    "vivah vedam", "wedding planners in India", "luxury wedding planner", "destination wedding planner India",
+    "wedding planning company", "wedding planners near me", "best wedding planners", "affordable wedding planning",
+    "wedding packages India", "wedding budget planner", "wedding EMI", "wedding loan", "wedding finance India",
+    "EMI wedding planner", "pay wedding in installments", "zero percent EMI wedding", "sustainable wedding planner",
+    "zero waste wedding", "eco friendly wedding India", "green wedding planner", "wedding food donation",
+    "NGO food rescue wedding", "floral waste recycling wedding", "flower recycling wedding", "mandap decoration",
+    "haldi mehndi sangeet planner", "baraat planning", "wedding decor India", "wedding vendor management",
+    "wedding coordination", "day of wedding coordination", "Udaipur wedding planner", "Jaipur wedding planner",
+    "Goa wedding planner", "Jodhpur wedding planner", "Rishikesh wedding planner", "palace wedding India",
+    "beach wedding Goa", "royal wedding Rajasthan", "destination wedding Udaipur", "intimate wedding planner",
+    "micro wedding India", "wedding timeline management", "wedding guest logistics", "wedding invitations and favors",
+    "mehndi artist booking", "wedding makeup artist booking", "wedding photography and film", "sangeet choreography",
+    "wedding catering management", "wedding budget management", "luxury Indian wedding", "big fat indian wedding planner",
+    "NRI wedding planner India", "sikh wedding planner", "christian wedding planner india", "muslim wedding planner india",
+    "interfaith wedding planner", "wedding concierge", "shaadi planner", "shadi planning", "vivah", "vedam",
+    "seven vows wedding", "wedding atelier India", "book wedding vendors online", "wedding venue marketplace India",
+  ],
+  robots: { index: true, follow: true, googleBot: { "max-image-preview": "large" } },
+  alternates: { canonical: "https://vivahvedam.in/" },
+  openGraph: {
+    type: "website",
+    siteName: "Vivah Vedam",
+    title: "Vivah Vedam — Seven vows. Zero worries.",
     description:
-      "Share your wedding date, city, and budget. We instantly surface venues and vendors that match your dream day.",
+      "We curate the plan, make every booking, and execute every function to the minute. EMI-friendly. Zero-waste through our NGO partners.",
+    url: "https://vivahvedam.in/",
+    images: [{ url: "https://vivahvedam.in/og-image.jpg", width: 1200, height: 630 }],
+    locale: "en_IN",
   },
-  {
-    num: "02",
-    icon: Building2,
-    title: "Discover & book",
-    description:
-      "Browse curated venues, compare professionals, read real reviews, and secure bookings with secure escrow payments.",
+  twitter: {
+    card: "summary_large_image",
+    title: "Vivah Vedam — Wedding Planners | EMI Options & Zero-Waste Weddings",
+    description: "End-to-end wedding planning in India: curated plans, all bookings, flawless execution. Zero hassle for you.",
+    images: ["https://vivahvedam.in/og-image.jpg"],
   },
-  {
-    num: "03",
-    icon: CheckCircle2,
-    title: "Plan with confidence",
-    description:
-      "Your personalized dashboard guides every step — from first booking to final detail. Message vendors, track budget, stay on schedule.",
-  },
-];
+};
 
-const testimonials = [
-  {
-    quote:
-      "VivahVedam made planning our destination wedding in Udaipur feel effortless. We found our dream venue, photographer, and caterer all in one place.",
-    name: "Priya & Arjun",
-    role: "Married Dec 2025",
-    rating: 5,
-  },
-  {
-    quote:
-      "As a vendor, the platform has transformed my business. I've booked 40% more weddings this season and the escrow payments give both sides peace of mind.",
-    name: "Kavita Sharma",
-    role: "Wedding Photographer",
-    rating: 5,
-  },
-  {
-    quote:
-      "The journey planner kept us on track when we were overwhelmed. Every milestone, every deadline — beautifully organized. Worth every rupee.",
-    name: "Meera & Rohan",
-    role: "Married Mar 2026",
-    rating: 5,
-  },
-];
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  additionalType: "WeddingPlanner",
+  name: "Vivah Vedam",
+  url: "https://vivahvedam.in/",
+  description:
+    "Full-service wedding planning in India: curation, bookings, execution, EMI financing and zero-waste weddings with NGO food & floral rescue.",
+  email: "hello@vivahvedam.in",
+  areaServed: ["India", "Udaipur", "Jaipur", "Goa", "Jodhpur", "Delhi NCR"],
+  priceRange: "₹₹₹",
+  aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", reviewCount: "214" },
+  makesOffer: [
+    { "@type": "Offer", itemOffered: { "@type": "Service", name: "End-to-end wedding planning & execution" } },
+    { "@type": "Offer", itemOffered: { "@type": "Service", name: "Wedding financing with EMI options" } },
+    { "@type": "Offer", itemOffered: { "@type": "Service", name: "Zero-waste weddings — food & floral rescue via NGO partners" } },
+  ],
+};
 
-const stats = [
-  { value: "2,500+", label: "Verified Vendors" },
-  { value: "10,000+", label: "Happy Couples" },
-  { value: "₹50Cr+", label: "Weddings Booked" },
-  { value: "4.9★", label: "Average Rating" },
-];
+/* ── IMAGE SLOTS ────────────────────────────────────────────────
+   Every <img> carries a data-slot="…" label. Search `data-slot`
+   and swap the picsum URL for your own hosted image (S3/CDN).   */
 
-export default function HomePage() {
+export default function LandingPage() {
   return (
-    <>
-      <Navbar />
+    <div id="vv-top" className={`vv ${vibes.variable}`}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <LandingMotion />
+      <div className="vv-progress" aria-hidden="true" />
 
-      <main>
-        {/* ═══ Hero ═══ */}
-        <section className="grain relative overflow-hidden bg-gradient-to-b from-[#faf6f1] via-[#f5ebe0] to-[#ede7df]">
-          <div className="container mx-auto px-4 pb-16 pt-20 lg:pb-24 lg:pt-32">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="animate-reveal-up font-body text-sm font-medium tracking-widest text-terracotta-500 uppercase">
-                The Modern Wedding Marketplace
-              </p>
+      <div className="vv-topbar">
+        Now curating Winter 2026–27 weddings · 3 dates left this season · EMI plans available
+      </div>
 
-              <h1 className="animate-reveal-up delay-1 mt-6 font-heading text-5xl font-light leading-[1.1] tracking-tight text-foreground lg:text-7xl">
-                Plan the wedding
-                <br />
-                you&apos;ve always{" "}
-                <span className="font-normal italic text-terracotta-500">
-                  imagined
+      {/* ══════════ HERO ══════════ */}
+      <section className="vv-hero">
+        <div className="vv-wrap vv-hero-grid">
+          <div>
+            <p className="vv-eyebrow" data-scramble data-scramble-text="CURATED · BOOKED · EXECUTED · FOR YOU">
+              CURATED · BOOKED · EXECUTED · FOR YOU
+            </p>
+            <h1 className="vv-h1 vv-lm">
+              <span className="vv-lm-l"><span>Seven vows.</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}>
+                <span className="vv-it vv-script-over">
+                  zero worries.
+                  <span className="vv-script">vivah vedam</span>
                 </span>
-              </h1>
-
-              <p className="animate-reveal-up delay-2 mx-auto mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-                Discover venues, hire top professionals, and manage every detail
-                of your special day — all in one beautiful place.
-              </p>
-
-              {/* ── Airbnb-style Search Bar ── */}
-              <div className="animate-reveal-up delay-3 mx-auto mt-10 max-w-2xl">
-                <HeroSearchBar />
-              </div>
-
-              {/* ── Trust Badges ── */}
-              <div className="animate-reveal-up delay-4 mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-sage-500" />
-                  2,500+ verified vendors
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-sage-500" />
-                  Secure escrow payments
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-sage-500" />
-                  Free to browse
-                </span>
-              </div>
+              </span>
+            </h1>
+            <p className="vv-lead" data-reveal style={{ "--d": ".25s" } as React.CSSProperties}>
+              You bring the love story. We curate the plan, make every booking, and run every function
+              to the minute — from the first haldi to the last dance. Your only job is to be present.
+            </p>
+            <div className="vv-ctas" data-reveal style={{ "--d": ".35s" } as React.CSSProperties}>
+              <a className="vv-btn" href="#begin">Begin your story <ArrowRight size={15} /></a>
+              <a className="vv-btn vv-btn-ghost" href="#journey">See the journey <ArrowRight size={15} style={{ transform: "rotate(90deg)" }} /></a>
+            </div>
+            <div className="vv-hero-meta" data-reveal style={{ "--d": ".45s" } as React.CSSProperties}>
+              <div><b>200+</b><span>weddings executed</span></div>
+              <div><b>4.9 ★</b><span>couple rating</span></div>
+              <div><b>0%</b><span>EMI partner plans</span></div>
+              <div><b>100%</b><span>waste rescued</span></div>
             </div>
           </div>
-        </section>
 
-        {/* ═══ Stats Strip ═══ */}
-        <section className="border-y border-border/50 bg-card">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 divide-x divide-border/50 md:grid-cols-4">
-              {stats.map((stat, i) => (
-                <ScrollReveal key={stat.label} delay={i * 0.1}>
-                  <div className="px-6 py-8 text-center">
-                    <div className="font-heading text-2xl font-semibold text-foreground lg:text-3xl">
-                      {stat.value}
-                    </div>
-                    <div className="mt-1 text-xs tracking-wider text-muted-foreground uppercase">
-                      {stat.label}
-                    </div>
-                  </div>
-                </ScrollReveal>
+          <div className="vv-collage" aria-hidden="true">
+            <div className="vv-sun" />
+            <figure className="vv-pcard vv-pc-a">
+              <div className="vv-ph vv-kb">
+                {/* IMG: hero-a — main couple portrait (≈900×1120) */}
+                <img data-slot="hero-a" src="https://picsum.photos/seed/vivah-couple-floral-arch/900/1120" alt="Couple beneath a floral arch at their wedding" />
+              </div>
+              <figcaption className="vv-script">the first look</figcaption>
+            </figure>
+            <figure className="vv-pcard vv-pc-b">
+              <div className="vv-ph">
+                {/* IMG: hero-b — sangeet night (≈700×900) */}
+                <img data-slot="hero-b" src="https://picsum.photos/seed/vivah-sangeet-lights/700/900" alt="Sangeet night glowing with lights" />
+              </div>
+              <figcaption className="vv-script">sangeet till late</figcaption>
+            </figure>
+            <figure className="vv-pcard vv-pc-c">
+              <div className="vv-ph">
+                {/* IMG: hero-c — haldi morning (≈800×520) */}
+                <img data-slot="hero-c" src="https://picsum.photos/seed/vivah-haldi-marigold/800/520" alt="Haldi morning with marigolds" />
+              </div>
+              <figcaption className="vv-script">haldi mornings</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ MARQUEE ══════════ */}
+      <div className="vv-marquee" aria-hidden="true">
+        <div className="vv-mq-track">
+          {Array.from({ length: 2 }).map((_, dup) => (
+            <span key={dup} className="vv-mq-set">
+              {["Haldi", "Mehndi", "Sangeet", "Pheras", "Reception", "Destination", "EMI-Friendly", "Zero-Waste"].map((w) => (
+                <span key={w} className="vv-mq-item">{w}</span>
               ))}
-            </div>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════ THE JOURNEY ══════════ */}
+      <section className="vv-journey" id="journey">
+        <div className="vv-wrap vv-jgrid">
+          <div className="vv-jsticky">
+            <span className="vv-overline">The Journey</span>
+            <h2 className="vv-h2 vv-lm">
+              <span className="vv-lm-l"><span>From “yes”</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".1s" } as React.CSSProperties}><span>to happily ever</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".2s" } as React.CSSProperties}><span className="vv-it">after — without</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".3s" } as React.CSSProperties}><span className="vv-it">the chaos.</span></span>
+            </h2>
+            <span className="vv-script vv-script-md">five steps, that&apos;s all</span>
+            <p className="vv-jnote" data-reveal style={{ "--d": ".35s" } as React.CSSProperties}>
+              One team, one point of contact, one promise: everything is handled by us so nothing is handled by you.
+            </p>
           </div>
-        </section>
 
-        {/* ═══ Browse by Category ═══ */}
-        <section className="py-20 lg:py-28">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="text-center">
-                <p className="text-xs font-semibold tracking-widest text-terracotta-500 uppercase">
-                  Everything You Need
-                </p>
-                <h2 className="mt-3 font-heading text-3xl font-light tracking-tight lg:text-4xl">
-                  Browse by category
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-              {categories.map((cat, i) => {
-                const Icon = cat.icon;
-                return (
-                  <ScrollReveal key={cat.slug} delay={i * 0.08}>
-                    <Link
-                      href={
-                        cat.slug === "venues"
-                          ? "/venues"
-                          : `/services?category=${cat.slug}`
-                      }
-                      className="shadow-warm-sm group flex flex-col items-center rounded-2xl border border-border/40 bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-warm-lg"
-                    >
-                      <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-xl ${cat.color} transition-transform duration-300 group-hover:scale-110`}
-                      >
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <span className="mt-3 text-sm font-semibold text-foreground">
-                        {cat.label}
-                      </span>
-                      <span className="mt-0.5 text-xs text-muted-foreground">
-                        {cat.count} pros
-                      </span>
-                    </Link>
-                  </ScrollReveal>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ Featured Venues ═══ */}
-        <section className="bg-[#f5ebe0] py-20 lg:py-28">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="flex items-end justify-between">
+          <ol className="vv-steps">
+            <span className="vv-steps-fill" aria-hidden="true" />
+            {[
+              {
+                n: "01", tag: "Reach out", title: <>You come to us</>,
+                body: "Over chai, coffee or a call — tell us your vision, your dates, your people and your budget. We listen more than we speak, and your first consultation is always on the house.",
+                chips: ["Free consult", "Same-day reply", "No obligation"], slot: "journey-1", seed: "vivah-consult-chai", alt: "Couple in a planning consultation",
+              },
+              {
+                n: "02", tag: "Design", title: <>We curate your plan</>,
+                body: "Moodboards, venue shortlists, function timelines and a budget sheet tracked down to the last marigold. You approve; we refine until it feels unmistakably yours.",
+                chips: ["Moodboards", "Budget sheet", "Timelines"], slot: "journey-2", seed: "vivah-moodboard-plan", alt: "Wedding moodboard and planning sheets",
+              },
+              {
+                n: "03", tag: "Lock it in", title: <>Every booking, done with us</>,
+                body: "Venues, décor, catering, artists, stays — all negotiated, contracted and booked through our desk. One agreement, one payment trail, zero vendor juggling at midnight.",
+                chips: ["Vetted vendors", "Negotiated rates", "One contract"], slot: "journey-3", seed: "vivah-palace-venue", alt: "Palace venue being booked",
+              },
+              {
+                n: "04", tag: "Showtime", title: <>We help execute the weddings</>,
+                body: "A 72-hour operations plan, a floor manager for every function, vendors synced to the minute, and a calm voice on the radio solving things before you ever know they happened.",
+                chips: ["Floor managers", "Minute-by-minute rundown", "Guest desk"], slot: "journey-4", seed: "vivah-wedding-ops", alt: "Wedding day execution on the floor",
+              },
+              {
+                n: "05", tag: "The promise", title: <>You have <em>no hassle.</em></>, free: true,
+                body: "You dance. You cry a little. You eat the food at your own wedding. We run the show — that's the deal, and it's the whole point of us.",
+                chips: ["You just show up", "We handle the rest"], slot: "journey-5", seed: "vivah-couple-dancing", alt: "Couple dancing freely at their wedding",
+              },
+            ].map((s, i) => (
+              <li key={s.n} className={`vv-step${s.free ? " vv-step-free" : ""}`} data-reveal style={{ "--d": `${i * 0.06}s` } as React.CSSProperties}>
+                <div className="vv-step-no">{s.n}<small>{s.tag}</small></div>
                 <div>
-                  <p className="text-xs font-semibold tracking-widest text-terracotta-500 uppercase">
-                    Hand-Picked
-                  </p>
-                  <h2 className="mt-3 font-heading text-3xl font-light tracking-tight lg:text-4xl">
-                    Featured venues
-                  </h2>
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
+                  <div className="vv-step-tags">{s.chips.map((c) => <span key={c}>{c}</span>)}</div>
                 </div>
-                <Link
-                  href="/venues"
-                  className="hidden items-center gap-1 text-sm font-medium text-terracotta-500 transition-colors hover:text-terracotta-700 md:flex"
-                >
-                  View all venues
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </ScrollReveal>
+                <figure className="vv-step-img">
+                  {/* IMG: {s.slot} (≈400×400) */}
+                  <img data-slot={s.slot} src={`https://picsum.photos/seed/${s.seed}/400/400`} alt={s.alt} />
+                </figure>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-              {featuredVenues.map((venue, i) => (
-                <ScrollReveal key={venue.name} delay={i * 0.12}>
-                  <Link
-                    href="/venues"
-                    className="shadow-warm group block overflow-hidden rounded-2xl bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-warm-xl"
-                  >
-                    <div
-                      className={`relative h-52 bg-gradient-to-br ${venue.gradient} overflow-hidden`}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-foreground backdrop-blur-sm">
-                        <Star className="h-3 w-3 fill-gold-500 text-gold-500" />
-                        {venue.rating}
-                      </div>
-                    </div>
-                    <div className="p-5">
-                      <h3 className="font-heading text-lg font-semibold text-foreground">
-                        {venue.name}
-                      </h3>
-                      <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {venue.city}
-                        </span>
-                        <span>·</span>
-                        <span>{venue.capacity}</span>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4">
-                        <div>
-                          <span className="text-xs text-muted-foreground">
-                            Starting at
-                          </span>
-                          <div className="flex items-center text-lg font-semibold text-foreground">
-                            {venue.price}
-                          </div>
-                        </div>
-                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-terracotta-50 text-terracotta-500 transition-colors group-hover:bg-terracotta-500 group-hover:text-white">
-                          <ArrowRight className="h-4 w-4" />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </ScrollReveal>
-              ))}
+      {/* ══════════ FINANCING / EMI ══════════ */}
+      <section className="vv-finance" id="finance">
+        <div className="vv-wrap vv-fgrid">
+          <div>
+            <span className="vv-overline vv-overline-cream">Financing</span>
+            <h2 className="vv-h2 vv-lm">
+              <span className="vv-lm-l"><span>Say yes to the</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span><em className="vv-gold-it">wedding,</em> not the wait.</span></span>
+            </h2>
+            <p className="vv-lead vv-lead-cream" data-reveal style={{ "--d": ".2s" } as React.CSSProperties}>
+              The celebration shouldn&apos;t cost you your calm. We help finance your wedding with easy EMI
+              options, so the day you&apos;ve dreamed of happens on the date you&apos;ve chosen.
+            </p>
+            <ul className="vv-points" data-reveal style={{ "--d": ".3s" } as React.CSSProperties}>
+              <li><span className="vv-dot"><Wallet size={15} /></span>0% EMI plans with our partner banks &amp; NBFCs on eligible bookings</li>
+              <li><span className="vv-dot"><CalendarRange size={15} /></span>Flexible tenures from 3 to 36 months — structured around your dates</li>
+              <li><span className="vv-dot"><ShieldCheck size={15} /></span>Transparent paperwork handled by our desk, approved in as little as 48 hours</li>
+              <li><span className="vv-dot"><Sparkles size={15} /></span>Book with a small advance now, split the rest across milestones</li>
+            </ul>
+          </div>
+          <EmiCalculator />
+        </div>
+      </section>
+
+      {/* ══════════ SEVA / SUSTAINABILITY ══════════ */}
+      <section className="vv-seva" id="seva">
+        <div className="vv-wrap">
+          <span className="vv-overline vv-overline-sage">Seva · Our promise to the planet</span>
+          <div className="vv-sgrid">
+            <div>
+              <h2 className="vv-h2 vv-lm">
+                <span className="vv-lm-l"><span>Shaadi without</span></span>
+                <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span>the <em className="vv-sage-it">waste.</em></span></span>
+              </h2>
+              <p className="vv-lead" data-reveal style={{ "--d": ".2s" } as React.CSSProperties}>
+                Every Vivah Vedam wedding gives back. Through our NGO contacts, surplus food from your functions
+                is packed, collected and served to people in need the very same night — and every stem of floral
+                waste is rescued, composted or upcycled instead of reaching landfill. Your celebration becomes
+                someone&apos;s blessing.
+              </p>
+              <p className="vv-lead" data-reveal style={{ "--d": ".28s" } as React.CSSProperties}>
+                It costs you nothing extra. It means everything.
+              </p>
             </div>
-
-            <div className="mt-8 text-center md:hidden">
-              <Button variant="outline" asChild>
-                <Link href="/venues">
-                  View all venues
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
+            <div className="vv-seva-imgs" data-reveal style={{ "--d": ".2s" } as React.CSSProperties}>
+              <figure>
+                {/* IMG: seva-food (≈700×880) */}
+                <img data-slot="seva-food" src="https://picsum.photos/seed/vivah-food-rescue/700/880" alt="Volunteers packing rescued wedding food" />
+                <figcaption>Food rescued · same night</figcaption>
+              </figure>
+              <figure>
+                {/* IMG: seva-floral (≈700×620) */}
+                <img data-slot="seva-floral" src="https://picsum.photos/seed/vivah-flower-compost/700/620" alt="Wedding flowers being upcycled" />
+                <figcaption>Florals → compost &amp; incense</figcaption>
+              </figure>
             </div>
           </div>
-        </section>
 
-        {/* ═══ How It Works ═══ */}
-        <section className="py-20 lg:py-28">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="text-center">
-                <p className="text-xs font-semibold tracking-widest text-terracotta-500 uppercase">
-                  Simple Process
-                </p>
-                <h2 className="mt-3 font-heading text-3xl font-light tracking-tight lg:text-4xl">
-                  How VivahVedam works
-                </h2>
-              </div>
-            </ScrollReveal>
+          <ul className="vv-flow" data-reveal>
+            <li><span className="vv-flow-n"><UtensilsIcon /></span><b>Weigh &amp; pack the surplus</b><p>Our ground team boxes untouched food hygienically within an hour of each function ending.</p></li>
+            <li><span className="vv-flow-n"><HeartHandshake size={16} /></span><b>Same-night distribution</b><p>Partner NGOs deliver it warm to shelters and night-homes across the city before sunrise.</p></li>
+            <li><span className="vv-flow-n"><Recycle size={16} /></span><b>Florals get a second life</b><p>Marigold and rose waste is composted or rolled into incense — nothing goes to landfill.</p></li>
+          </ul>
 
-            <div className="mx-auto mt-16 grid max-w-5xl gap-12 md:grid-cols-3 md:gap-8">
-              {steps.map((step, i) => {
-                const Icon = step.icon;
-                return (
-                  <ScrollReveal key={step.num} delay={i * 0.15}>
-                    <div className="relative text-center md:text-left">
-                      <span className="font-heading text-6xl font-light text-terracotta-100">
-                        {step.num}
-                      </span>
-                      <div className="-mt-4 mb-4 flex justify-center md:justify-start">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sage-50 text-sage-600">
-                          <Icon className="h-6 w-6" />
-                        </div>
-                      </div>
-                      <h3 className="font-heading text-xl font-semibold text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                        {step.description}
-                      </p>
-                    </div>
-                  </ScrollReveal>
-                );
-              })}
-            </div>
+          <div className="vv-stats" data-reveal>
+            <div><b data-count="120000" data-suffix="+">0</b><span>meals served via NGO partners</span></div>
+            <div><b data-count="18500" data-suffix=" kg">0</b><span>flowers kept from landfill</span></div>
+            <div><b data-count="64">0</b><span>zero-waste weddings delivered</span></div>
+            <div><b data-count="12">0</b><span>NGO &amp; compost partners</span></div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ═══ Testimonials ═══ */}
-        <section className="grain relative overflow-hidden bg-gradient-to-b from-[#f5ebe0] to-[#ede7df] py-20 lg:py-28">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="text-center">
-                <p className="text-xs font-semibold tracking-widest text-terracotta-500 uppercase">
-                  Love Stories
-                </p>
-                <h2 className="mt-3 font-heading text-3xl font-light tracking-tight lg:text-4xl">
-                  What our couples say
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-3">
-              {testimonials.map((t, i) => (
-                <ScrollReveal key={t.name} delay={i * 0.12}>
-                  <div className="shadow-warm flex h-full flex-col rounded-2xl border border-border/30 bg-card p-6">
-                    <Quote className="mb-3 h-8 w-8 text-terracotta-200" />
-                    <p className="flex-1 text-sm leading-relaxed text-foreground/80">
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
-                    <div className="mt-6 flex items-center gap-3 border-t border-border/50 pt-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-terracotta-50 font-heading text-sm font-semibold text-terracotta-600">
-                        {t.name.charAt(0)}
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-foreground">
-                          {t.name}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {t.role}
-                        </div>
-                      </div>
-                      <div className="ml-auto flex gap-0.5">
-                        {Array.from({ length: t.rating }).map((_, j) => (
-                          <Star
-                            key={j}
-                            className="h-3 w-3 fill-gold-400 text-gold-400"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
+      {/* ══════════ GALLERY — SCATTERED POSTCARDS ══════════ */}
+      <section className="vv-work" id="work">
+        <div className="vv-wrap">
+          <div className="vv-work-head">
+            <div>
+              <span className="vv-overline">Recent weddings</span>
+              <h2 className="vv-h2 vv-lm" style={{ marginBottom: 0 }}>
+                <span className="vv-lm-l"><span>Moments we were</span></span>
+                <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-it">trusted with.</span></span>
+              </h2>
             </div>
+            <span className="vv-script vv-script-md vv-gold-script" data-reveal>postcards from the pheras</span>
           </div>
-        </section>
-
-        {/* ═══ Vendor CTA ═══ */}
-        <section className="bg-[#2c2825] py-20 lg:py-28">
-          <div className="container mx-auto px-4">
-            <ScrollReveal>
-              <div className="mx-auto max-w-2xl text-center">
-                <p className="text-xs font-semibold tracking-widest text-terracotta-400 uppercase">
-                  For Professionals
-                </p>
-                <h2 className="mt-4 font-heading text-3xl font-light tracking-tight text-[#f5ebe0] lg:text-4xl">
-                  Grow your wedding business
-                </h2>
-                <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-[#a09080]">
-                  Join 2,500+ verified vendors on India&apos;s fastest-growing
-                  wedding marketplace. Manage bookings, showcase your portfolio,
-                  and reach couples actively planning their dream wedding.
-                </p>
-
-                <div className="mt-10 flex flex-wrap justify-center gap-8 text-center">
-                  {[
-                    { val: "40%", label: "More bookings" },
-                    { val: "₹0", label: "To list" },
-                    { val: "3 days", label: "Avg. first booking" },
-                  ].map((s) => (
-                    <div key={s.label}>
-                      <div className="font-heading text-2xl font-semibold text-terracotta-400">
-                        {s.val}
-                      </div>
-                      <div className="mt-1 text-xs text-[#a09080]">
-                        {s.label}
-                      </div>
-                    </div>
-                  ))}
+          <div className="vv-cards">
+            {[
+              { c: "vv-c1", slot: "postcard-1", seed: "vivah-baraat", alt: "Baraat procession in full colour", cap: "the baraat", city: "Jaipur", d: "0s" },
+              { c: "vv-c2", slot: "postcard-2", seed: "vivah-mehndi", alt: "Mehndi detail on the bride's hands", cap: "mehndi details", city: "Delhi", d: ".08s" },
+              { c: "vv-c3", slot: "postcard-3", seed: "vivah-pheras-dusk", alt: "Pheras at dusk around the sacred fire", cap: "pheras at dusk", city: "Udaipur", d: ".16s" },
+              { c: "vv-c4", slot: "postcard-4", seed: "vivah-reception-glow", alt: "Reception glowing with candlelight", cap: "reception glow", city: "Goa", d: ".24s" },
+              { c: "vv-c5", slot: "postcard-5", seed: "vivah-sangeet-dance", alt: "Sangeet dance floor at full energy", cap: "sangeet till 3am", city: "Jodhpur", d: "0s" },
+              { c: "vv-c6", slot: "postcard-6", seed: "vivah-long-table", alt: "Wedding table setting with florals", cap: "the long table", city: "Pushkar", d: ".12s" },
+            ].map((p) => (
+              <figure key={p.slot} className={p.c} data-reveal style={{ "--d": p.d } as React.CSSProperties}>
+                <div className="vv-ph">
+                  {/* IMG: {p.slot} */}
+                  <img data-slot={p.slot} src={`https://picsum.photos/seed/${p.seed}/620/780`} alt={p.alt} />
                 </div>
-
-                <div className="mt-10">
-                  <Button
-                    size="lg"
-                    className="rounded-full bg-terracotta-500 px-8 text-white hover:bg-terracotta-600"
-                    asChild
-                  >
-                    <Link href="/signup">
-                      List your business
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </ScrollReveal>
+                <figcaption><span className="vv-script">{p.cap}</span><small>{p.city}</small></figcaption>
+              </figure>
+            ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <Footer />
-    </>
+      {/* ══════════ FEATURED WEDDING ══════════ */}
+      <section className="vv-featured">
+        <div className="vv-wrap vv-feat-grid">
+          <div className="vv-feat-sticky">
+            <span className="vv-overline">Featured wedding</span>
+            <span className="vv-script vv-script-md">Diya &amp; Arjun</span>
+            <h2 className="vv-h2 vv-lm">
+              <span className="vv-lm-l"><span>Three days by</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-it">Lake Pichola.</span></span>
+            </h2>
+            <ul className="vv-spec" data-reveal style={{ "--d": ".2s" } as React.CSSProperties}>
+              <li><span>Venue</span><span>Heritage palace, Udaipur</span></li>
+              <li><span>Guests</span><span>320, flown &amp; hosted</span></li>
+              <li><span>Functions</span><span>Haldi · Mehndi · Sangeet · Pheras</span></li>
+              <li><span>Vendors synced</span><span>14 teams, one radio</span></li>
+              <li><span>Florals rescued</span><span>620 kg → compost &amp; incense</span></li>
+              <li><span>Meals served</span><span>1,400 via NGO partners</span></li>
+              <li><span>Financed</span><span>24-month EMI plan</span></li>
+            </ul>
+          </div>
+          <div className="vv-feat-imgs">
+            <figure data-reveal>
+              <div className="vv-ph vv-kb">
+                {/* IMG: featured-1 (≈1100×760) */}
+                <img data-slot="featured-1" src="https://picsum.photos/seed/vivah-udaipur-palace/1100/760" alt="Palace ceremony overlooking the lake" />
+              </div>
+              <figcaption>The pheras, framed by the lake</figcaption>
+            </figure>
+            <figure data-reveal style={{ "--d": ".1s" } as React.CSSProperties}>
+              <div className="vv-ph">
+                {/* IMG: featured-2 (≈900×1100) */}
+                <img data-slot="featured-2" src="https://picsum.photos/seed/vivah-floral-mandap/900/1100" alt="Floral mandap detail" />
+              </div>
+              <figcaption>A mandap of forty thousand marigolds</figcaption>
+            </figure>
+            <figure data-reveal style={{ "--d": ".15s" } as React.CSSProperties}>
+              <div className="vv-ph">
+                {/* IMG: featured-3 (≈1000×700) */}
+                <img data-slot="featured-3" src="https://picsum.photos/seed/vivah-sangeet-stage/1000/700" alt="Sangeet stage under the stars" />
+              </div>
+              <figcaption>Sangeet under a borrowed sky</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ SERVICES ══════════ */}
+      <section className="vv-services">
+        <div className="vv-wrap">
+          <span className="vv-overline">Everything under one roof</span>
+          <h2 className="vv-h2 vv-lm">
+            <span className="vv-lm-l"><span>One desk for</span></span>
+            <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-it">every detail.</span></span>
+          </h2>
+          <div className="vv-svc-grid">
+            {[
+              ["01", "Venues & Mandaps", "Palaces, lawns, beaches, rooftops — scouted & negotiated."],
+              ["02", "Décor & Florals", "Concept to build, with a rescue plan for every stem."],
+              ["03", "Catering & Bar", "Menus tasted, counters managed, surplus boxed for seva."],
+              ["04", "Photography & Film", "Editorial stills and films you'll rewatch for decades."],
+              ["05", "Mehndi & Makeup", "Artists shortlisted, trials scheduled, touch-up desk on site."],
+              ["06", "Music & Entertainment", "DJs, dhol, choreography, sangeet direction."],
+              ["07", "Guest Travel & Stay", "Room blocks, pickups, a hospitality desk that never sleeps."],
+              ["08", "Invites & Favors", "Paper goods and gifts people actually keep."],
+            ].map(([n, t, d], i) => (
+              <div key={n} className="vv-svc" data-reveal style={{ "--d": `${(i % 4) * 0.05}s` } as React.CSSProperties}>
+                <span className="vv-svc-n">{n}</span>
+                <div><b>{t}</b><p>{d}</p></div>
+                <ArrowUpRight size={18} className="vv-svc-go" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ TESTIMONIALS ══════════ */}
+      <Testimonials />
+
+      {/* ══════════ FAQ ══════════ */}
+      <section className="vv-faq" id="faq">
+        <div className="vv-wrap vv-faq-grid">
+          <div>
+            <span className="vv-overline">Good to know</span>
+            <h2 className="vv-h2 vv-lm">
+              <span className="vv-lm-l"><span>Questions couples</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-it">ask us first.</span></span>
+            </h2>
+            <span className="vv-script vv-script-md vv-gold-script">no question is too small</span>
+          </div>
+          <Faq />
+        </div>
+      </section>
+
+      {/* ══════════ BEGIN ══════════ */}
+      <section className="vv-begin" id="begin">
+        <span className="vv-big-script" aria-hidden="true">vivah vedam</span>
+        <div className="vv-wrap vv-bgrid">
+          <div>
+            <VivahMark size={64} />
+            <span className="vv-overline vv-overline-cream" style={{ marginTop: 18 }}>Begin your story</span>
+            <h2 className="vv-h2 vv-lm">
+              <span className="vv-lm-l"><span>Tell us the date.</span></span>
+              <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-gold-it">We&apos;ll take it from there.</span></span>
+            </h2>
+            <p className="vv-lead vv-lead-cream" data-reveal style={{ "--d": ".2s" } as React.CSSProperties}>
+              One form. One call. A curated plan in your inbox within five days — with honest numbers,
+              EMI options and a seva plan baked in.
+            </p>
+            <ul className="vv-bcontact" data-reveal style={{ "--d": ".3s" } as React.CSSProperties}>
+              <li><span className="vv-ic"><Phone size={15} /></span>+91 98765 43210 · WhatsApp friendly</li>
+              <li><span className="vv-ic"><Mail size={15} /></span>hello@vivahvedam.in</li>
+              <li><span className="vv-ic"><MapPin size={15} /></span>Studio visits by appointment · Mumbai &amp; Udaipur</li>
+              <li><span className="vv-ic"><Leaf size={15} /></span>Every wedding includes a seva report</li>
+            </ul>
+          </div>
+          <LeadForm />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* Small inline icon wrapper so the flow list stays emoji-free (MASTER.md rule) */
+function UtensilsIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <path d="M7 3v7a2 2 0 0 1-2 2v9M5 3v6M9 3v6M17 3c-1.5 2-2 4.5-2 7 0 2 .8 3 2 3v8" />
+    </svg>
   );
 }
