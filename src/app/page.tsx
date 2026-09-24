@@ -85,15 +85,16 @@ const jsonLd = {
 export default function LandingPage() {
   return (
     <>
+      <div className={`vv ${vibes.variable}`} style={{ position: "relative" }}>
+        <div className="vv-topbar">
+          Now curating Winter 2026–27 weddings · 3 dates left this season · EMI plans available
+        </div>
+      </div>
       <Navbar />
       <div id="vv-top" className={`vv ${vibes.variable}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <LandingMotion />
       <div className="vv-progress" aria-hidden="true" />
-
-      <div className="vv-topbar">
-        Now curating Winter 2026–27 weddings · 3 dates left this season · EMI plans available
-      </div>
 
       {/* ══════════ HERO ══════════ */}
       <section className="vv-hero">
@@ -402,11 +403,11 @@ export default function LandingPage() {
               ["07", "Guest Travel & Stay", "Room blocks, pickups, a hospitality desk that never sleeps."],
               ["08", "Invites & Favors", "Paper goods and gifts people actually keep."],
             ].map(([n, t, d], i) => (
-              <div key={n} className="vv-svc" data-reveal style={{ "--d": `${(i % 4) * 0.05}s` } as React.CSSProperties}>
+              <a key={n} href="/services" className="vv-svc" data-reveal style={{ "--d": `${(i % 4) * 0.05}s` } as React.CSSProperties}>
                 <span className="vv-svc-n">{n}</span>
                 <div><b>{t}</b><p>{d}</p></div>
                 <ArrowUpRight size={18} className="vv-svc-go" />
-              </div>
+              </a>
             ))}
           </div>
         </div>
