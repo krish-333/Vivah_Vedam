@@ -5,6 +5,8 @@ import {
   Leaf, Recycle, HeartHandshake, Wallet, CalendarRange, ShieldCheck,
 } from "lucide-react";
 import "./landing.css";
+import { Navbar } from "@/components/layouts/navbar";
+import { Footer } from "@/components/layouts/footer";
 import { VivahMark } from "@/components/landing/vivah-mark";
 import LandingMotion from "@/components/landing/landing-motion";
 import { EmiCalculator } from "@/components/landing/emi-calculator";
@@ -82,7 +84,9 @@ const jsonLd = {
 
 export default function LandingPage() {
   return (
-    <div id="vv-top" className={`vv ${vibes.variable}`}>
+    <>
+      <Navbar />
+      <div id="vv-top" className={`vv ${vibes.variable}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <LandingMotion />
       <div className="vv-progress" aria-hidden="true" />
@@ -452,6 +456,8 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+    <Footer />
+    </>
   );
 }
 
