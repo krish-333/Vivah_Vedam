@@ -1,138 +1,139 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Calculator, IndianRupee } from "lucide-react";
+import type { CSSProperties } from "react";
+import { ArrowRight } from "lucide-react";
+
+const TENURES = [6, 12, 24, 36];
+const MIN = 500_000;
+const MAX = 10_000_000;
+const RATE = 12;
+
+const inr = new Intl.NumberFormat("en-IN", {
+  style: "currency",
+  currency: "INR",
+  maximumFractionDigits: 0,
+});
 
 export function EmiCalculator() {
-  const [amount, setAmount] = useState(1000000);
-  const [months, setMonths] = useState(12);
-  const [rate, setRate] = useState(12);
+  const [budget, setBudget] = useState(2_500_000);
+  const [months, setMonths] = useState(24);
+  const [pulse, setPulse] = useState(false);
 
-  const emi = useMemo(() => {
-    const principal = Number(amount);
-    const annualRate = Number(rate);
-    const tenure = Number(months);
+  const { emi, total } = useMemo(() => {
+    const r = RATE / 1200;
 
-    if (!principal || !tenure) return 0;
+    const e =
+      r === 0
+        ? budget / months
+        : (budget * r * Math.pow(1 + r, months)) /
+          (Math.pow(1 + r, months) - 1);
 
-    const monthlyRate = annualRate / 12 / 100;
+    return {
+      emi: e,
+      total: e * months,
+    };
+  }, [budget, months]);
 
-    if (monthlyRate === 0) {
-      return principal / tenure;
-    }
+  const pct = ((budget - MIN) / (MAX - MIN)) * 100;
 
-    const value =
-      principal *
-      monthlyRate *
-      Math.pow(1 + monthlyRate, tenure) /
-      (Math.pow(1 + monthlyRate, tenure) - 1);
+  const bump = () => {
+    setPulse(false);
 
-    return value;
-  }, [amount, months, rate]);
-
-  const totalPayment = emi * months;
-  const totalInterest = Math.max(totalPayment - amount, 0);
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0,
-    }).format(value);
+    requestAnimationFrame(() => {
+      setPulse(true);
+    });
+  };
 
   return (
-    <div className="vv-emi-card">
-      <div className="vv-emi-heading">
-        <div className="vv-emi-icon">
-          <Calculator size={20} />
-        </div>
+    <div
+      className="vv-calc"
+      data-reveal
+      style={{ "--d": ".2s" } as CSSProperties}
+    >
+      <h3>Plan your budget</h3>
 
-        <div>
-          <p className="vv-eyebrow">FINANCING ESTIMATOR</p>
-          <h3>Plan your wedding budget</h3>
-        </div>
-      </div>
+      <p className="vv-calc-sub">EMI estimator · instant</p>
 
-      <p className="vv-emi-description">
-        Get an indicative monthly payment estimate for your wedding budget.
-        Actual financing terms depend on the lender and eligibility.
-      </p>
+      <label htmlFor="vv-budget">Wedding budget</label>
 
-      <div className="vv-emi-grid">
-        <div className="vv-emi-field">
-          <label htmlFor="emi-amount">Wedding amount</label>
+      <p className="vv-budget-out">{inr.format(budget)}</p>
 
-          <div className="vv-emi-input-wrap">
-            <IndianRupee size={16} />
-            <input
-              id="emi-amount"
-              type="number"
-              min="10000"
-              step="10000"
-              value={amount}
-              onChange={(event) => setAmount(Number(event.target.value))}
-            />
-          </div>
-        </div>
+      <input
+        id="vv-budget"
+        className="vv-range"
+        type="range"
+        min={MIN}
+        max={MAX}
+        step={100_000}
+        value={budget}
+        style={
+          {
+            "--vv-p": `${pct}%`,
+          } as CSSProperties
+        }
+        onChange={(e) => {
+          setBudget(Number(e.target.value));
+          bump();
+        }}
+        aria-label="Wedding budget"
+      />
 
-        <div className="vv-emi-field">
-          <label htmlFor="emi-months">Tenure</label>
+      <label>Tenure</label>
 
-          <select
-            id="emi-months"
-            value={months}
-            onChange={(event) => setMonths(Number(event.target.value))}
+      <div
+        className="vv-tenures"
+        role="group"
+        aria-label="EMI tenure"
+      >
+        {TENURES.map((m) => (
+          <button
+            key={m}
+            type="button"
+            className={m === months ? "vv-on" : ""}
+            onClick={() => {
+              setMonths(m);
+              bump();
+            }}
           >
-            <option value={6}>6 months</option>
-            <option value={12}>12 months</option>
-            <option value={18}>18 months</option>
-            <option value={24}>24 months</option>
-            <option value={36}>36 months</option>
-            <option value={48}>48 months</option>
-            <option value={60}>60 months</option>
-          </select>
-        </div>
-
-        <div className="vv-emi-field">
-          <label htmlFor="emi-rate">Annual interest rate</label>
-
-          <div className="vv-emi-input-wrap">
-            <input
-              id="emi-rate"
-              type="number"
-              min="0"
-              max="50"
-              step="0.1"
-              value={rate}
-              onChange={(event) => setRate(Number(event.target.value))}
-            />
-            <span>%</span>
-          </div>
-        </div>
+            {m} mo
+          </button>
+        ))}
       </div>
 
-      <div className="vv-emi-result">
+      <div className="vv-emi-out">
         <div>
-          <span>Estimated monthly payment</span>
-          <strong>{formatCurrency(emi)}</strong>
+          <p className="vv-emi-per">Estimated EMI</p>
+
+          <p className={`vv-emi-val${pulse ? " vv-pulse" : ""}`}>
+            {inr.format(emi)}
+          </p>
+
+          <p
+            className="vv-emi-per"
+            style={{ marginTop: 6 }}
+          >
+            per month · {inr.format(total)} total
+          </p>
         </div>
 
-        <div className="vv-emi-result-details">
-          <div>
-            <span>Total payment</span>
-            <strong>{formatCurrency(totalPayment)}</strong>
-          </div>
-
-          <div>
-            <span>Estimated interest</span>
-            <strong>{formatCurrency(totalInterest)}</strong>
-          </div>
-        </div>
+        <p className="vv-emi-tiny">
+          Indicative at {RATE}% p.a. Final terms depend on eligibility
+          and the financing partner.
+        </p>
       </div>
 
-      <p className="vv-emi-note">
-        This calculator is for illustration only and does not constitute a
-        loan offer, approval, or financing commitment.
+      <a
+        className="vv-btn vv-btn-gold"
+        href="#begin"
+      >
+        Talk to us about EMI <ArrowRight size={15} />
+      </a>
+
+      <p className="vv-fine">
+        This is an estimate, not a quote. Final terms depend on eligibility
+        and the financing partner. We&apos;ll walk you through everything,
+        in writing, before you commit.
       </p>
     </div>
   );
