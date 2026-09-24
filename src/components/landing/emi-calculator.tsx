@@ -131,9 +131,9 @@ export function EmiCalculator() {
       </a>
 
       <p className="vv-fine">
-        This is an estimate, not a quote. Final terms depend on eligibility
-        and the financing partner. We&apos;ll walk you through everything,
-        in writing, before you commit.
+        Indicative estimate only, at a sample rate of {RATE}% p.a. Vivah Vedam does not lend money or
+        approve loans — this tool is for budget planning. Any financing is provided separately by
+        regulated partner institutions, subject to their eligibility checks.
       </p>
     </div>
   );
