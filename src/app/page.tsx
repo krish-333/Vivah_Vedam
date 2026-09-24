@@ -11,7 +11,7 @@ import { EmiCalculator } from "@/components/landing/emi-calculator";
 import { Testimonials } from "@/components/landing/testimonials";
 import { Faq } from "@/components/landing/faq";
 import { LeadForm } from "@/components/landing/lead-form";
-
+import { SlotImg } from "@/components/landing/slot-img";
 const vibes = Great_Vibes({ subsets: ["latin"], weight: "400", variable: "--vv-script" });
 
 export const metadata: Metadata = {
