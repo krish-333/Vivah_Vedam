@@ -3,27 +3,29 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+/* PREVIEW CONTENT: these are illustrative sample stories for design purposes.
+   Replace with verified reviews (from the `reviews` table) before production launch. */
 const SLIDES = [
   {
-    seed: "vivah-couple-meera",
-    alt: "Meera and Rohan",
-    quote: "We genuinely attended our own wedding as guests. Every vendor, every timeline, every panic — it all dissolved before it ever reached us.”",
-    who: "Meera & Rohan",
-    meta: "Palace wedding, Udaipur · 280 guests",
+    avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+    alt: "Sample couple portrait",
+    quote: "Every vendor, every timeline, every panic — handled in one dashboard before it ever reached us.”",
+    who: "Sample story · Palace wedding",
+    meta: "Illustrative preview",
   },
   {
-    seed: "vivah-couple-ananya",
-    alt: "Ananya and Kabir",
-    quote: "The EMI plan is what made our date possible. We didn't postpone the dream — we just spread it out, with everything in writing.”",
-    who: "Ananya & Kabir",
-    meta: "Beach wedding, Goa · 140 guests",
+    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    alt: "Sample couple portrait",
+    quote: "The budget tracker and escrow payments meant no surprises — we always knew what was paid and what was next.”",
+    who: "Sample story · Beach wedding",
+    meta: "Illustrative preview",
   },
   {
-    seed: "vivah-couple-sana",
-    alt: "Sana and Dev",
-    quote: "Our nani cried when she heard the leftover food fed 900 people that night. That's the wedding we wanted — beautiful, and good.”",
-    who: "Sana & Dev",
-    meta: "Courtyard wedding, Jaipur · 350 guests",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    alt: "Sample couple portrait",
+    quote: "Messaging every vendor from one place instead of forty WhatsApp threads saved our sanity.”",
+    who: "Sample story · Courtyard wedding",
+    meta: "Illustrative preview",
   },
 ];
 
@@ -43,18 +45,28 @@ export function Testimonials() {
   return (
     <section className="vv-stories" id="stories">
       <div className="vv-wrap">
-        <span className="vv-overline vv-overline-cream">Couples say</span>
+        <span className="vv-overline vv-overline-cream">Why couples choose us</span>
         <h2 className="vv-h2 vv-lm">
-          <span className="vv-lm-l"><span>We showed up.</span></span>
-          <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-gold-it">They did everything.</span></span>
+          <span className="vv-lm-l"><span>One platform for</span></span>
+          <span className="vv-lm-l" style={{ "--d": ".12s" } as React.CSSProperties}><span className="vv-gold-it">your entire wedding.</span></span>
         </h2>
 
         <div className="vv-tstage" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           <div className="vv-ttrack" style={{ transform: `translateX(-${i * 100}%)` }}>
             {SLIDES.map((s) => (
               <div className="vv-tslide" key={s.who}>
-                {/* IMG: testimonial avatar (≈300×300) */}
-                <img data-slot={`testimonial-${s.who.split(" ")[0].toLowerCase()}`} src={`https://picsum.photos/seed/${s.seed}/300/300`} alt={s.alt} />
+                <img
+                  src={s.avatar}
+                  alt={s.alt}
+                  width={128}
+                  height={128}
+                  onError={(e) => {
+                    const t = e.currentTarget;
+                    if (t.dataset.fb) return;
+                    t.dataset.fb = "1";
+                    t.src = "https://picsum.photos/seed/vv-avatar/300/300";
+                  }}
+                />
                 <div>
                   <blockquote>{s.quote}</blockquote>
                   <p className="vv-twho">
@@ -72,10 +84,21 @@ export function Testimonials() {
           <button type="button" aria-label="Next story" onClick={() => go(i + 1)}><ChevronRight size={18} /></button>
           <div className="vv-tdots">
             {SLIDES.map((_, k) => (
-              <i key={k} className={k === i ? "vv-on" : ""} onClick={() => go(k)} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && go(k)} aria-label={`Story ${k + 1}`} />
+              <i
+                key={k}
+                className={k === i ? "vv-on" : ""}
+                role="button"
+                tabIndex={0}
+                aria-label={`Story ${k + 1}`}
+                onClick={() => go(k)}
+                onKeyDown={(e) => e.key === "Enter" && go(k)}
+              />
             ))}
           </div>
         </div>
+        <p className="vv-fine" style={{ marginTop: 18, color: "rgba(250,246,241,.55)" }}>
+          Sample stories shown for preview — verified couple reviews from completed bookings will appear here after launch.
+        </p>
       </div>
     </section>
   );
