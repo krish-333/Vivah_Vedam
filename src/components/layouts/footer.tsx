@@ -33,7 +33,7 @@ export function Footer() {
                 vivah
               </span>
               <span className="font-heading text-xl font-semibold tracking-tight text-terracotta-400">
-                verse
+                vedam
               </span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-[#8a7968]">
@@ -77,7 +77,7 @@ export function Footer() {
               Privacy
             </Link>
             <Link
-              href="/contact"
+              href="/terms"
               className="transition-colors hover:text-[#a09080]"
             >
               Terms
