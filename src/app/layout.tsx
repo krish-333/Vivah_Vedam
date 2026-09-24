@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Outfit, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { DemoAccountsBanner } from "@/components/dev/demo-accounts-banner";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className="min-h-screen antialiased">
         {children}
         {process.env.NODE_ENV === "development" && <DemoAccountsBanner />}
+        <Analytics />
       </body>
     </html>
   );
